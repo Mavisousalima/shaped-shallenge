@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from news.models import News
 from news.serializers import NewsSerializer
@@ -15,7 +16,9 @@ class NewsAPIView(APIView):
             serializer = NewsSerializer(news, many=False)
         else:
             news = News.objects.all()
-            serializer = NewsSerializer(news, many=True)
+            pagination = PageNumberPagination()
+            page = pagination.paginate_queryset(news, request)
+            serializer = NewsSerializer(page, many=True)
             
         return Response(serializer.data)
 
