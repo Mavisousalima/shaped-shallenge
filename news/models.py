@@ -7,6 +7,8 @@ class News(models.Model):
     author = models.CharField(max_length=100)
     content = models.TextField()
     pub_date = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     category = models.CharField(max_length=50, choices=(
         ('politics', 'Politics'),
         ('sports', 'Sports'),
