@@ -21,3 +21,9 @@ class News(models.Model):
 
     def get_absolute_url(self):
         return reverse('news_detail', args=[str(self.id)])
+    
+
+class TemporaryLink(models.Model):
+    news = models.ForeignKey(News, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, unique=True)
+    expiration_time = models.DateTimeField()

@@ -2,8 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
-from news.models import News
-from news.serializers import NewsSerializer
+from news.models import News, TemporaryLink
+from news.serializers import NewsSerializer, TemporaryLinkSerializer
+from django.utils import timezone
+from utils.generate_token import generate_token
 
 
 class NewsAPIView(APIView):
@@ -49,3 +51,27 @@ class NewsAPIView(APIView):
 
         news_article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class TemporaryLinkView(APIView):
+    def post(self, request, news_id):
+        try:
+            news = News.objects.get(id=news_id)
+        except News.DoesNotExist:
+            return Response({"message": "News not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        token = generate_token()
+        expiration_time = timezone.now() + timezone.timedelta(hours=1)
+        
+        TemporaryLink.objects.create(news=news, token=token, expiration_time=expiration_time)
+        
+        return Response({"link": f'http://localhost:8000/api/link/{token}', "expiration_time": expiration_time}, status=status.HTTP_201_CREATED)
+    
+    def get(self, request, token):
+        try:
+            temporary_link = TemporaryLink.objects.get(token=token, expiration_time__gt=timezone.now())
+        except TemporaryLink.DoesNotExist:
+            return Response({"message": "Temporary link not found or expired"}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = NewsSerializer(temporary_link.news)
+        return Response(serializer.data)
