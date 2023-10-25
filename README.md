@@ -51,3 +51,8 @@ Com o ambiente virtual ativo, e com pacotes instalados agora é só rodar o serv
 ```bash
 python manage.py test
 ```
+
+
+# Passo 7: Gerando link de noticias
+
+Para gerar um link de noticia, realize um POST para o endpoint http://127.0.0.1:8000/api/link/{news_id}.
