@@ -1,0 +1,46 @@
+# Byte-compiled / optimized Python files
+__pycache__/
+*.pyc
+*.pyo
+__init__.py
+
+# Logs
+*.log
+
+# Static files (usually collected into STATIC_ROOT)
+staticfiles/
+ 
+# Media files (usually collected into MEDIA_ROOT)
+media/
+ 
+# Virtual environment
+venv/
+ 
+# Secret key
+secret_key.txt
+ 
+# Site-specific settings
+*.conf
+
+# Local development settings
+settings_local.py
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# Byte-compiled files
+*.pyc
+
+# User-specific files
+*.swp
+*.swo
+
+# Temporary files
+*.~
+
+# Virtual environment
+venv/
